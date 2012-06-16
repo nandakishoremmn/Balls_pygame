@@ -17,6 +17,9 @@ class Game:
     def __init__(self):
         init()
         self.n = 0
+        self.score = 0
+        self.score_max = 10.0
+        self.high = 0
         self.balls = []
         self.player = PLAYER()
         self.target = TARGET()
@@ -26,22 +29,29 @@ class Game:
         self.Font = font.SysFont("arial", 40);
     
     def put_message(self):
-        message = "Balls : %d"%(self.n)
+        message = "Balls : %2d    Score : %3d    High : %3d"%(self.n,self.score,self.high)
         text = self.Font.render(message, True, (0, 0, 255))    
-        screen.blit(text, (100,int(.9*screen.get_height())))
-        display.update([[0,int(screen.get_height()*.9)],[int(screen.get_width()/2),int(screen.get_height()*.1)]])
+        screen.blit(text, (screen.get_width()/2 - text.get_width()/2,int(.9*screen.get_height())))
+        display.update([[0,int(screen.get_height()*.9)],[int(screen.get_width()),int(screen.get_height()*.1)]])
         
     def check(self):
+        # checks if player hits target
         if (abs(self.target.x-self.player.x) < self.target.width/2+self.player.width/2) and (abs(self.target.y-self.player.y) < self.target.width/2+self.player.height/2):
-            self.balls.append(BALL())
+            self.balls.append(BALL(self.player.x,self.player.y))
             self.n+=1
             self.target.play_sound()
             self.target.new()
+            self.score += int(max(self.score_max,5))
+            self.high = max(self.high,self.score)
+            self.score_max = 10.0
             self.put_message()
             self.draw()
+        # checks if plater hits a ball
         for ball in self.balls:
             if (self.player.x-self.player.width/2 < ball.x < self.player.x+self.player.width/2) and (self.player.y-self.player.height/2 < ball.y < self.player.y+self.player.height/2):
                 self.player.play_sound()
+                self.score = 0
+                self.score_max = 10.0
                 self.stop = True      
                 
     def update(self):
@@ -91,6 +101,7 @@ class Game:
                 self.update()
                 self.draw()
                 self.check()
+                self.score_max -= .04
             self.clock.tick(100)
             
 if __name__=='__main__':

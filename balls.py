@@ -5,20 +5,20 @@ Created on 30-May-2012
 '''
 from initialise import screen
 from pygame import image
-from math import floor
-from random import random
+from math import ceil
+from random import random, randrange
 
 
 class BALL:
     
-    def __init__(self):
+    def __init__(self,x=0,y=0):
         self.pic = image.load('images/ball.png')
         self.width = self.pic.get_width()
         self.height = self.pic.get_height()
-        self.x = self.width  + floor( random()*(screen.get_width()     - 2*self.width ) )
-        self.y = self.height + floor( random()*(screen.get_height()*.9 - 2*self.height) )
-        self.dx = (random()*3)
-        self.dy = (random()*3)
+        self.x = self.width  + randrange( 0,ceil((screen.get_width()  - x)    - 2*self.width ) )
+        self.y = self.height + randrange( 0,ceil((screen.get_height() - y)*.9 - 2*self.height) )
+        self.dx = (random()*2)
+        self.dy = (random()*2)
           
     def move(self):
         self.x+=self.dx

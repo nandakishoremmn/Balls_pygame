@@ -15,7 +15,7 @@ class PLAYER:
         self.pic = image.load('images/player.png')
         self.width = self.pic.get_width()
         self.height = self.pic.get_height()
-        self.sound = mixer.Sound('end.wav')
+        self.sound = mixer.Sound('sounds/end.wav')
     
     def play_sound(self):
 

@@ -18,14 +18,13 @@ class TARGET:
         self.pic = image.load('images/target.png')
         self.width = self.pic.get_width()
         self.height = self.pic.get_height()
-        self.sound = mixer.Sound('target.wav')
+        self.sound = mixer.Sound('sounds/target.wav')
     
     def play_sound(self):
 
         channel = self.sound.play()
 
         if channel is not None:
-            # Get the left and right volumes
             left = float(self.x)/screen.get_width()
             right = 1.0 - left
             right, left = left/sqrt(right**2+left**2), right/sqrt(right**2+left**2)
